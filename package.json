@@ -3,7 +3,7 @@
   "version": "1.4.0",
   "type": "module",
   "description": "Interactive SQL CLI for Atlassian Forge SQL via web triggers",
-  "packageManager": "pnpm@10.17.0",
+  "packageManager": "pnpm@12.16.1",
   "engines": {
     "node": "22"
   },
@@ -65,45 +65,32 @@
   ],
   "author": "Chris Hatch",
   "license": "MIT",
-  "pnpm": {
-    "overrides": {
-      "@isaacs/brace-expansion": "5.0.1",
-      "diff": "4.0.4",
-      "flatted": "3.4.1",
-      "undici": "7.24.4",
-      "minimatch@<3.1.4": "3.1.4",
-      "minimatch@>=9.0.0 <9.0.7": "9.0.7",
-      "minimatch@>=10.0.0 <10.2.4": "10.2.4",
-      "ajv@<6.14.0": "6.14.0",
-      "ajv@>=7.0.0-alpha.0 <8.18.0": "8.18.0"
-    }
-  },
   "dependencies": {
-    "@forge/api": "^6.4.2",
-    "@forge/sql": "^3.0.14",
-    "chalk": "^5.4.1",
-    "cli-table3": "^0.6.3",
-    "dotenv": "^16.0.3",
-    "ora": "^9.0.0",
+    "@forge/api": "^8.4.0",
+    "@forge/sql": "^4.0.9",
+    "chalk": "^6.0.1",
+    "cli-table3": "^0.6.5",
+    "dotenv": "^18.0.9",
+    "ora": "^9.4.1",
     "prompts": "^2.4.2",
-    "yaml": "^2.8.2"
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.3",
-    "@eslint/js": "^9.39.1",
-    "@types/node": "^22.19.1",
-    "@typescript-eslint/eslint-plugin": "^8.48.0",
-    "@typescript-eslint/parser": "^8.48.0",
-    "eslint": "9.39.1",
-    "eslint-config-prettier": "^9.1.2",
-    "eslint-plugin-unused-imports": "^4.3.0",
-    "globals": "^15.15.0",
+    "@eslint/eslintrc": "^3.3.7",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.20.5",
+    "@typescript-eslint/eslint-plugin": "^8.72.1",
+    "@typescript-eslint/parser": "^8.72.1",
+    "eslint": "10.13.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "globals": "^17.13.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
-    "prettier": "^3.7.3",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.0",
-    "vitest": "^4.1.0"
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.0.5"
   }
 }

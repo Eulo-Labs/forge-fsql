@@ -130,7 +130,7 @@ async function createExecutionFunction(isTypeScript, isEsm) {
     fs.mkdirSync(srcSameDir, { recursive: true });
   }
 
-  let templateFile = "";
+  let templateFile;
   if (isTypeScript) {
     templateFile = "execute-sql.ts";
   } else if (isEsm) {
@@ -191,7 +191,7 @@ function readManifest(manifestPath) {
     const fileContents = fs.readFileSync(manifestPath, "utf8");
     return YAML.parseDocument(fileContents);
   } catch (e) {
-    throw new Error(`Error reading manifest: ${e.message}`);
+    throw new Error(`Error reading manifest: ${e.message}`, { cause: e });
   }
 }
 
