@@ -65,6 +65,10 @@
   ],
   "author": "Chris Hatch",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eulo-Labs/forge-fsql.git"
+  },
   "dependencies": {
     "@forge/api": "^8.4.0",
     "@forge/sql": "^4.0.9",
