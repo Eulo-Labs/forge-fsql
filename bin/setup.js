@@ -20,10 +20,71 @@ const YAML = require("yaml");
 
 const projectRoot = process.cwd();
 
+// Locate the nearest node_modules/.bin containing the forge CLI, walking up
+// from the project root (handles pnpm/yarn workspaces where the bin lives at
+// the workspace root). Returns null when no local install exists.
+function findLocalForgeBinDir() {
+  let dir = projectRoot;
+  for (;;) {
+    const binDir = path.join(dir, "node_modules", ".bin");
+    if (
+      fs.existsSync(path.join(binDir, "forge")) ||
+      fs.existsSync(path.join(binDir, "forge.cmd"))
+    ) {
+      return binDir;
+    }
+    const parent = path.dirname(dir);
+    if (parent === dir) return null;
+    dir = parent;
+  }
+}
+
+function isForgeOnPath() {
+  const dirs = (process.env.PATH || "").split(path.delimiter).filter(Boolean);
+  const names =
+    process.platform === "win32"
+      ? ["forge.cmd", "forge.exe", "forge.bat", "forge"]
+      : ["forge"];
+  return dirs.some((dir) =>
+    names.some((name) => fs.existsSync(path.join(dir, name))),
+  );
+}
+
+const localForgeBinDir = findLocalForgeBinDir();
+
+// Env for child processes: ensures a project-local @forge/cli resolves before
+// any global install. Falls back to the inherited environment.
+function forgeChildEnv() {
+  const env = { ...process.env };
+  if (localForgeBinDir) {
+    env.PATH = `${localForgeBinDir}${path.delimiter}${env.PATH || ""}`;
+  }
+  return env;
+}
+
 async function main() {
   console.log(chalk.bold.blue("\n🚀 Forge SQL CLI Setup\n"));
 
   const { isEsm, isTypeScript } = checkDependencies();
+
+  if (!localForgeBinDir && !isForgeOnPath()) {
+    console.error(chalk.red("\n❌ Error: Forge CLI not found."));
+    console.log(
+      chalk.yellow(
+        "fsql-setup needs the `forge` CLI to deploy your app and create webtriggers.",
+      ),
+    );
+    console.log("Install it in your project:");
+    console.log(chalk.blue("\n  npm install --save-dev @forge/cli"));
+    console.log("  # or");
+    console.log(chalk.blue("  pnpm add -D @forge/cli"));
+    console.log("  # or");
+    console.log(chalk.blue("  yarn add -D @forge/cli\n"));
+    console.log("Or install it globally:");
+    console.log(chalk.blue("\n  npm install -g @forge/cli\n"));
+    process.exit(1);
+  }
+
   const manifestPath = getManifestPath();
 
   const fsqlRelPath = await createExecutionFunction(isTypeScript, isEsm);
@@ -362,6 +423,7 @@ async function deployForgeApp() {
     const child = spawn(deployCmd, {
       stdio: "inherit",
       shell: true,
+      env: forgeChildEnv(),
     });
 
     child.on("close", (code) => {
@@ -381,6 +443,7 @@ async function setupWebTrigger() {
   try {
     const listProc = spawn("forge", ["install", "list", "--json"], {
       shell: true,
+      env: forgeChildEnv(),
     });
     let listOutput = "";
     await new Promise((resolve) => {
@@ -436,6 +499,7 @@ async function setupWebTrigger() {
         "pipe", // stderr
       ],
       shell: true,
+      env: forgeChildEnv(),
     });
 
     let outputData = "";
