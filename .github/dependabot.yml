@@ -1,0 +1,24 @@
+version: 2
+updates:
+  # Keep npm dependencies fresh
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: monthly
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Update SHA-pinned GitHub Actions (dependabot rewrites the pin and
+  # bumps the version comment, keeping the commit-SHA pinning intact)
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        update-types:
+          - "minor"
+          - "patch"
