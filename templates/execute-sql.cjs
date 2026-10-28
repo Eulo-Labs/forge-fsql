@@ -5,8 +5,11 @@ const api_1 = require("@forge/api");
 const sql_1 = require("@forge/sql");
 const executeSql = async (req) => {
     console.log("\n=== Executing Custom SQL Query ===");
-    if ((0, api_1.getAppContext)()?.environmentType === `PRODUCTION`) {
-        const errorMsg = `executeSql is disabled in PRODUCTION for security.`;
+    const appContext = (0, api_1.getAppContext)();
+    if (!appContext || appContext.environmentType === `PRODUCTION`) {
+        const errorMsg = !appContext
+            ? `executeSql requires a valid Forge context.`
+            : `executeSql is disabled in PRODUCTION for security.`;
         console.log(errorMsg);
         return getHttpResponse(403, {
             success: false,
@@ -14,10 +17,9 @@ const executeSql = async (req) => {
         });
     }
     const payload = req.body;
-    let sqlRequest = null;
     let query;
     try {
-        sqlRequest = JSON.parse(payload);
+        const sqlRequest = JSON.parse(payload);
         query = sqlRequest?.query;
         if (!query) {
             return getHttpResponse(400, {
