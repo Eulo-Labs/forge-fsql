@@ -89,9 +89,8 @@
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
     "ts-node": "^10.9.2",
-    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.1",
-    "vitest": "^5.0.5",
-    "@typescript/native": "npm:typescript@^7.0.2"
+    "vitest": "^5.0.5"
   }
 }
