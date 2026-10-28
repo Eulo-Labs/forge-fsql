@@ -10,6 +10,14 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    ignore:
+      # @types/node majors track Node.js majors. This project targets
+      # Node 22 (engines.node and the CI workflow), so 24/25/26 types
+      # describe APIs that aren't guaranteed to exist at runtime. Revisit
+      # when engines.node is bumped to a newer major.
+      - dependency-name: "@types/node"
+        update-types:
+          - "version-update:semver-major"
 
   # Update SHA-pinned GitHub Actions (dependabot rewrites the pin and
   # bumps the version comment, keeping the commit-SHA pinning intact)
