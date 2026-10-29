@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      contents: read
+      contents: write
       id-token: write
 
     steps:
@@ -44,3 +44,11 @@ jobs:
 
       - name: Publish to npm
         run: pnpm publish --no-git-checks --access public --provenance
+
+      - name: Generate SBOM (CycloneDX)
+        run: pnpm run sbom
+
+      - name: Attach SBOM to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${GITHUB_REF_NAME}" forge-fsql-*.sbom.cdx.json --clobber

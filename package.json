@@ -46,6 +46,8 @@
     "fixsrc": "eslint '**/*.{ts,tsx,js,jsx}' --ignore-pattern '**/eslint.config.js' --fix",
     "fixstyle": "prettier '**/*.{ts,tsx,js,jsx,json,md,yaml,yml}' --write",
     "test": "vitest run",
+    "sbom": "pnpm sbom --sbom-format cyclonedx --lockfile-only --out forge-fsql-%v.sbom.cdx.json",
+    "sbom:spdx": "pnpm sbom --sbom-format spdx --lockfile-only --out forge-fsql-%v.spdx.json",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "prepare": "husky",

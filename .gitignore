@@ -3,3 +3,5 @@
 dist/
 node_modules/
 fsql-dumps/
+*.sbom.cdx.json
+*.spdx.json
